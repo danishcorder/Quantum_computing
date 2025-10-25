@@ -1,0 +1,44 @@
+# Quantum Superposition Demo using Qiskit
+# Author: Muhammed Danish
+# Project: My First Quantum Computing Project
+
+# Importing required libraries
+from qiskit import QuantumCircuit
+from qiskit_aer import AerSimulator
+from qiskit.visualization import plot_bloch_multivector, plot_histogram
+from qiskit.quantum_info import Statevector
+import matplotlib.pyplot as plt
+
+# Step 1: Create a quantum circuit with 1 qubit and 1 classical bit
+qc = QuantumCircuit(1, 1)
+
+# Step 2: Apply Hadamard gate to the qubit
+qc.h(0)
+
+# Step 3: Visualize the circuit
+print("Quantum Circuit:")
+print(qc.draw())
+
+# Step 4: Get the statevector to visualize the qubit’s state on the Bloch sphere
+state = Statevector.from_instruction(qc)
+plot_bloch_multivector(state)
+plt.title("Qubit State After Hadamard Gate (Superposition)")
+plt.show()
+
+# Step 5: Measure the qubit
+qc.measure(0, 0)
+
+# Step 6: Simulate the circuit 1000 times
+simulator = AerSimulator()
+job = simulator.run(qc, shots=1000)
+result = job.result()
+counts = result.get_counts(qc)
+
+# Step 7: Print the measurement results
+print("\nMeasurement Results:")
+print(counts)
+
+# Step 8: Plot the result histogram
+plot_histogram(counts)
+plt.title("Measurement Results of Qubit in Superposition")
+plt.show()
